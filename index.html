@@ -1,0 +1,268 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>UFE</title>
+<style>
+  :root { --navy:#14284b; --sky:#dfeaf7; --gold:#e0a526; --ink:#1b2433; --paper:#f7f9fc; --white:#fff; box-sizing:border-box; padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px); }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  html { scroll-behavior:smooth; scroll-padding-top:70px; }
+  body { font-family:"Trebuchet MS","Segoe UI",Arial,sans-serif; color:var(--ink); background:var(--paper); line-height:1.5; }
+  a { color:inherit; text-decoration:none; }
+  :focus-visible { outline:3px solid var(--gold); outline-offset:3px; }
+
+  /* NAV BAR */
+  nav { position:sticky; top:0; z-index:10; background:var(--navy); color:var(--white); display:flex; flex-wrap:wrap; align-items:center; gap:8px 20px; padding:10px 24px; }
+  .logo { font-family:Georgia,"Times New Roman",serif; font-size:1.2rem; font-weight:bold; margin-right:auto; }
+  nav .links { display:flex; flex-wrap:wrap; gap:4px 18px; }
+  nav .links a { padding:6px 2px; border-bottom:3px solid transparent; }
+  nav .links a:hover { border-bottom-color:var(--gold); }
+  .btn { display:inline-block; background:var(--gold); color:var(--navy); font-weight:bold; font-size:1rem; padding:12px 24px; border-radius:6px; border:0; cursor:pointer; font-family:inherit; transition:background .2s,transform .2s; }
+  .btn:hover { background:#f0b83a; transform:translateY(-2px); }
+  .loginbtn { background:none; color:inherit; font:inherit; cursor:pointer; border:2px solid var(--gold); border-radius:6px; padding:4px 14px; transition:background .2s,color .2s; }
+  .loginbtn:hover { background:var(--gold); color:var(--navy); }
+  nav .links { align-items:center; }
+  .card { background:var(--white); border:2px solid #d5deea; border-radius:10px; padding:20px; }
+  .card h4 { color:var(--navy); margin-bottom:4px; }
+  .tablewrap { overflow-x:auto; }
+  table { width:100%; border-collapse:collapse; background:var(--white); border-radius:8px; overflow:hidden; }
+  th, td { text-align:left; padding:12px 14px; border-bottom:1px solid #d5deea; }
+  th { background:var(--navy); color:var(--white); }
+
+  /* HERO */
+  .hero { position:relative; min-height:440px; display:flex; align-items:flex-end; overflow:hidden; background:var(--sky); }
+  .hero img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
+  .hero::after { content:""; position:absolute; inset:0; background:linear-gradient(to top,rgba(20,40,75,.88) 10%,rgba(20,40,75,0) 70%); }
+  .hero-text { position:relative; z-index:1; color:var(--white); padding:32px 24px 40px; max-width:900px; }
+  .hero-text h1 { font-family:Georgia,"Times New Roman",serif; font-size:clamp(2rem,6vw,3.6rem); line-height:1.1; }
+  .hero-text p { font-size:1.2rem; margin:10px 0 22px; }
+
+  section.page { max-width:1000px; margin:0 auto; padding:48px 24px; }
+  h2 { font-family:Georgia,"Times New Roman",serif; font-size:1.9rem; color:var(--navy); }
+  .sub { margin:4px 0 16px; color:#4a5568; }
+  h3 { font-size:1.15rem; color:var(--navy); margin:28px 0 12px; padding-bottom:6px; border-bottom:3px solid var(--gold); display:inline-block; }
+
+  /* SEARCH */
+  .search { width:100%; max-width:480px; font-size:1rem; font-family:inherit; padding:12px 16px; border:2px solid #b9c7da; border-radius:8px; background:var(--white); }
+  .search:focus { border-color:var(--navy); outline:none; }
+  #noResults { display:none; margin-top:16px; color:#4a5568; }
+
+  /* TILES */
+  .grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:16px; }
+  .tile { display:flex; align-items:center; gap:14px; background:var(--white); border:2px solid #d5deea; border-radius:10px; padding:18px; font-weight:bold; font-size:1.05rem; transition:border-color .2s,background .2s; }
+  .tile:hover { border-color:var(--navy); background:var(--sky); }
+  .icon { width:48px; height:48px; flex:none; border-radius:10px; display:grid; place-items:center; color:var(--white); font-size:.95rem; font-weight:bold; }
+  .i-mkt{background:#c0392b}.i-sch{background:#14284b}.i-att{background:#0f8b8d}.i-asg{background:#8e44ad}.i-ann{background:#d35400}.i-grd{background:#b8860b}.i-int{background:#2c7a4b}.i-vs{background:#007acc}.i-py{background:#3776ab}.i-wd{background:#2b579a}.i-xl{background:#217346}
+
+  /* ANNOUNCEMENTS */
+  .news { background:var(--white); border-left:6px solid var(--gold); border-radius:6px; padding:14px 18px; margin-bottom:12px; }
+  .news b { color:var(--navy); }
+  .news small { display:block; color:#5b6678; }
+
+  /* FORMS */
+  .bg { background:var(--sky); }
+  form { background:var(--white); border-radius:10px; padding:24px; max-width:520px; }
+  label { display:block; font-weight:bold; margin:12px 0 4px; }
+  input, textarea { width:100%; font-family:inherit; font-size:1rem; padding:10px 12px; border:2px solid #b9c7da; border-radius:6px; }
+  input:focus, textarea:focus { border-color:var(--navy); outline:none; }
+  textarea { min-height:110px; resize:vertical; }
+  form .btn { margin-top:16px; }
+  .msg { margin-top:12px; font-weight:bold; color:#217346; min-height:1.4em; }
+
+  dialog { margin:auto; border:0; border-radius:12px; padding:0; max-width:92vw; }
+  dialog::backdrop { background:rgba(20,40,75,.6); }
+  dialog form { max-width:none; width:min(420px,92vw); }
+  .close { float:right; background:none; border:0; font-size:1.6rem; cursor:pointer; color:var(--navy); }
+
+  footer { background:var(--navy); color:var(--white); text-align:center; padding:18px; font-size:.9rem; }
+  footer a { text-decoration:underline; margin-left:12px; }
+  @media (prefers-reduced-motion:reduce){ * { transition:none !important; } html { scroll-behavior:auto; } }
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="C:\Users\ASUS\Downloads\ufe.jpg.jpg"href="#home">Our University</a>
+  <div class="links">
+    <a href="#home">Home</a>
+    <a href="#profile">Profile</a>
+    <a href="#schedule">Schedule</a>
+    <a href="#courses">Courses</a>
+    <a href="#grades">Grades</a>
+    <button class="loginbtn" id="openLogin">Student Login</button>
+    <a href="#contact">Contact</a>
+  </div>
+</nav>
+
+<section class="hero" id="home">
+  <!-- Replace this src with your own campus photo, e.g. src="campus.jpg" -->
+  <img alt="University campus with main building and green lawn"
+       src="data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 600' preserveAspectRatio='xMidYMid slice'%3E%3Crect width='1200' height='600' fill='%23bcd9f2'/%3E%3Ccircle cx='980' cy='110' r='55' fill='%23fbe39a'/%3E%3Crect y='430' width='1200' height='170' fill='%2373a85b'/%3E%3Crect x='300' y='230' width='600' height='210' fill='%23c9a27a'/%3E%3Cpolygon points='280,230 600,110 920,230' fill='%2314284b'/%3E%3Crect x='560' y='320' width='80' height='120' fill='%2314284b'/%3E%3Cg fill='%23fff7dd'%3E%3Crect x='340' y='270' width='50' height='60'/%3E%3Crect x='420' y='270' width='50' height='60'/%3E%3Crect x='730' y='270' width='50' height='60'/%3E%3Crect x='810' y='270' width='50' height='60'/%3E%3C/g%3E%3Crect x='585' y='60' width='30' height='60' fill='%23c9a27a'/%3E%3Cpolygon points='580,60 600,25 620,60' fill='%2314284b'/%3E%3Crect x='540' y='440' width='120' height='160' fill='%23e8dcc4'/%3E%3Ccircle cx='160' cy='400' r='55' fill='%23487a3a'/%3E%3Crect x='152' y='440' width='16' height='60' fill='%23654321'/%3E%3Ccircle cx='1040' cy='400' r='55' fill='%23487a3a'/%3E%3Crect x='1032' y='440' width='16' height='60' fill='%23654321'/%3E%3C/svg%3E">
+  <div class="hero-text">
+    <h1>Welcome to UFE </h1>
+    <p>"Your Future Starts Here."</p>
+    <a href="#quick-access" class="btn">Explore More</a>
+  </div>
+</section>
+
+<section class="page" id="quick-access">
+  <p class="sub">Find your applications and services.</p>
+  <input class="search" id="search" type="search" placeholder="Search services, e.g. grades" aria-label="Search services">
+  <p id="noResults">No service found. Try another word.</p>
+
+  <div id="group1">
+    <h3>Student Services</h3>
+    <div class="grid">
+      <a class="tile" href="#schedule"><span class="icon i-sch">DM</span>Digital Marketing Portal</a>
+      <a class="tile" href="#quick-access"><span class="icon i-att">UNI</span>University Schedule</a>
+      <a class="tile" href="#quick-access"><span class="icon i-asg">ATT</span>Attendance Tracker</a>
+      <a class="tile" href="#grades"><span class="icon i-grd">G</span>Grades &amp; Assignment Tracker</a>
+      <a class="tile" href="#announcements"><span class="icon i-ann">UA</span>University Announcements</a>
+      <a class="tile" href="#quick-access"><span class="icon i-mkt">INT</span>Internship Opportunities</a>
+    </div>
+  </div>
+
+  <div id="group2">
+    <h3>Apps &amp; Tools</h3>
+    <div class="grid">
+      <a class="tile" href="https://code.visualstudio.com" target="_blank" rel="noopener"><span class="icon i-vs">VS</span>VS Code</a>
+      <a class="tile" href="https://www.python.org" target="_blank" rel="noopener"><span class="icon i-py">Py</span>Python</a>
+      <a class="tile" href="https://www.office.com/launch/word" target="_blank" rel="noopener"><span class="icon i-wd">W</span>Microsoft Word</a>
+      <a class="tile" href="https://www.office.com/launch/excel" target="_blank" rel="noopener"><span class="icon i-xl">X</span>Microsoft Excel</a>
+    </div>
+  </div>
+</section>
+
+<div class="bg">
+  <section class="page" id="announcements">
+    <h2>University Announcements</h2>
+    <p class="sub">Latest news for students.</p>
+    <div class="news"><b>Final exam schedule published</b><small>Check University Schedule for your dates.</small></div>
+    <div class="news"><b>Internship fair next month</b><small>Bring your CV. Open to all years.</small></div>
+    <div class="news"><b>Library opens late during exams</b><small>Open until midnight on weekdays.</small></div>
+  </section>
+</div>
+
+<section class="page" id="profile">
+  <h2>Profile</h2>
+  <p class="sub">Your student details.</p>
+  <div class="card" style="max-width:520px">
+    <p><b>Name:</b> Student Name</p>
+    <p><b>Student ID:</b>MG26...</p>
+    <p><b>Program:</b> Digital Marketing</p>
+    <p><b>Year:</b> 1</p>
+  </div>
+</section>
+
+<div class="bg">
+  <section class="page" id="schedule">
+    <h2>Schedule</h2>
+    <p class="sub">Your weekly classes.</p>
+    <div class="tablewrap">
+      <table>
+        <tr><th>Day</th><th>Time</th><th>Course</th><th>Room</th></tr>
+     <tr><td>Sunday</td><td>8:30 - 4:20</td><td>Digital Marketing</td><td>B101</td></tr>
+        <tr><td>Monday</td><td>8:30 - 4:20</td><td>Digital Marketing</td><td>B101</td></tr>
+        <tr><td>Tuesday</td><td>8:30 - 4:20></td><td>Python Programming</td><td>Lab 2</td></tr>
+        <tr><td>Wednesday</td><td>8:30 - 4:20 </td><td>Data Analysis with Excel</td><td>Lab 1</td></tr>
+        <tr><td>Thursday</td><td>8:30 - 4:20</td><td>Business Writing</td><td>A204</td></tr>
+      </table>
+    </div>
+  </section>
+</div>
+
+<section class="page" id="courses">
+  <h2>Courses</h2>
+  <p class="sub">Courses you are taking this semester.</p>
+  <div class="grid">
+    <div class="card"><h4>Digital Marketing</h4><p>Social media, ads and analytics.</p></div>
+    <div class="card"><h4>Python Programming</h4><p>Coding basics and small projects.</p></div>
+    <div class="card"><h4>Data Analysis with Excel</h4><p>Tables, formulas and charts.</p></div>
+    <div class="card"><h4>Business Writing</h4><p>Reports and emails in Word.</p></div>
+  </div>
+</section>
+
+<div class="bg">
+  <section class="page" id="grades">
+    <h2>Grades</h2>
+    <p class="sub">Your results so far.</p>
+    <div class="tablewrap">
+      <table>
+        <tr><th>Course</th><th>Grade</th><th>Status</th></tr>
+        <tr><td>Digital Marketing</td><td>A</td><td>Passed</td></tr>
+        <tr><td>Python Programming</td><td>B+</td><td>Passed</td></tr>
+        <tr><td>Data Analysis with Excel</td><td>A-</td><td>Passed</td></tr>
+        <tr><td>Business Writing</td><td>-</td><td>In progress</td></tr>
+      </table>
+    </div>
+  </section>
+</div>
+
+<section class="page" id="contact">
+  <h2>Contact Us</h2>
+  <p class="sub">Send a question to the university office.</p>
+  <form id="contactForm">
+    <label for="cname">Name</label>
+    <input id="cname" required>
+    <label for="cmail">Email</label>
+    <input id="cmail" type="email" required>
+    <label for="cmsg">Message</label>
+    <textarea id="cmsg" required></textarea>
+    <button class="btn" type="submit">Send Message</button>
+    <p class="msg" id="contactMsg" role="status"></p>
+  </form>
+</section>
+
+<dialog id="loginBox">
+  <form id="loginForm">
+    <button class="close" type="button" id="closeLogin" aria-label="Close">&times;</button>
+    <h2>Student Login</h2>
+    <label for="sid">Student ID</label>
+    <input id="sid" required>
+    <label for="spw">Password</label>
+    <input id="spw" type="password" required>
+    <button class="btn" type="submit">Log In</button>
+    <p class="msg" id="loginMsg" role="status"></p>
+  </form>
+</dialog>
+
+<footer>&copy; 2026 Our University. All rights reserved.<a href="#home">Back to top</a></footer>
+<script>
+  // Search: hide tiles that don't match
+  const search = document.getElementById('search');
+  const tiles = document.querySelectorAll('.tile');
+  search.addEventListener('input', () => {
+    const q = search.value.trim().toLowerCase();
+    let shown = 0;
+    tiles.forEach(t => {
+      const hit = t.textContent.toLowerCase().includes(q);
+      t.style.display = hit ? '' : 'none';
+      if (hit) shown++;
+    });
+    ['group1', 'group2'].forEach(id => {
+      const g = document.getElementById(id);
+      g.style.display = [...g.querySelectorAll('.tile')].some(t => t.style.display !== 'none') ? '' : 'none';
+    });
+    document.getElementById('noResults').style.display = shown ? 'none' : 'block';
+  });
+
+  // Login pop-up (demo only, no real login)
+  const box = document.getElementById('loginBox');
+  document.getElementById('openLogin').onclick = () => box.showModal();
+  document.getElementById('closeLogin').onclick = () => box.close();
+  document.getElementById('loginForm').onsubmit = e => {
+    e.preventDefault();
+    document.getElementById('loginMsg').textContent = 'Demo only: connect this form to your login system.';
+  };
+
+  // Contact form (demo only, no real sending)
+  document.getElementById('contactForm').onsubmit = e => {
+    e.preventDefault();
+    document.getElementById('contactMsg').textContent = 'Thank you. Your message was received.';
+    e.target.reset();
+  };
+</script>
+</body>
+</html>
